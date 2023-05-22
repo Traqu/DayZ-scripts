@@ -8,11 +8,13 @@ import threading
 server_hold_time_10 = 6.33 # zmienić jeśli serwer wymaga innego czasu przytrzymania...
 server_hold_time_1 = 1.55  # zmienić jeśli serwer wymaga innego czasu przytrzymania...
 
-countDownTimer = 3
+countDownTimer = 5
 TIME_NEEDED_TO_EXIT_ANIMATION = 0.6
 DELAY_BETWEEN_COMMANDS = 0.1 # DO NOT TOUCH!
 FROM_TO__HOLD_TIME = 0.0825
 BUTTON = 'f'
+
+exit_key = None
 
 #####################################################################################
 
@@ -146,7 +148,9 @@ def stop_execution():
 
 # Funkcja obsługująca wciśnięcie klawisza
 def key_press_handler(event):
+    global exit_key
     if event.name == 'a' or event.name == 'w' or event.name == 's' or event.name == 'd' or event.name == 'esc' or event.name == 'space' or event.name == 'shift':
+        exit_key = event.name
         stop_execution()
 
 # Rejestrujemy funkcję obsługującą wciśnięcie klawisza przerywającego proces
@@ -156,24 +160,27 @@ def start_cracking_the_code():
     setup()  # starting pos. from ones (player runs the script at thousands)
     check_1000s_options()
     if stop_flag.is_set():
-        print("\nScript has been cancelled\n")
+        print("\nScript has been cancelled due to - " + exit_key.upper() + " - pressing\n")
         return
 
 #####################################################################################
 #####################################################################################
 
-time.sleep(0.75)  # Oczekiwanie na przeniesienie focusu na DayZ
-print("\n\nAwaiting to focus at DayZ...")
+time.sleep(0.6)
+print('\nKeys that will terminate the script: ESC, SPACE, SHIFT, A, W, D, S')
+
+time.sleep(1.4)  # Oczekiwanie na przeniesienie focusu na DayZ
+print("\n\nAwaiting to focus at DayZ...\nDo not perform any moves in game")
 time.sleep(1.0)
 
 print('\nStarting in: ')
 time.sleep(1)
-for x in range(0, 3):
+for x in range(0, countDownTimer):
     print(str(countDownTimer) + "...")
     countDownTimer = countDownTimer - 1
     time.sleep(1)
 time.sleep(0.5)
-print('\n' + get_time() + ' EXECUTION START TIME\n\n\nCRACKING LOGS:\n')
+print('\n' + get_time() + ' EXECUTION START TIME - it might take up to 3 hours to fulfill\n\n\nCRACKING LOGS:\n')
 
 start_time = time.time()
 start_cracking_the_code()
