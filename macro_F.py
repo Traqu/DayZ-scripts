@@ -2,6 +2,7 @@ import time
 import keyboard
 import datetime
 import threading
+import pyautogui
 
 #####################################################################################
 
@@ -111,6 +112,13 @@ def check_0001s_options(key, hold_time):
         return
     print(get_time() + '  Checking ones')
     press_and_hold_key(BUTTON, server_hold_time_10)
+    time.sleep(TIME_NEEDED_TO_EXIT_ANIMATION)
+    if pyautogui.locateOnScreen('f.png',confidence=0.85)==None:
+        stop_flag.set()
+        print("I have found the code!")
+        return
+    else:
+        print("I still haven't found the code")
 
 def check_0010s_options():
     for _ in range(10):
@@ -160,14 +168,17 @@ def start_cracking_the_code():
     setup()  # starting pos. from ones (player runs the script at thousands)
     check_1000s_options()
     if stop_flag.is_set():
-        print("\nScript has been cancelled due to - " + exit_key.upper() + " - pressing\n")
+        if exit_key!=None:
+            print("\nScript has been cancelled due to - " + exit_key.upper() + " - pressing\n")
+        else:
+            print("\nScript has been cancelled due to succesfull code breach\n")
         return
 
 #####################################################################################
 #####################################################################################
 
 time.sleep(0.6)
-print('\nKeys that will terminate the script: ESC, SPACE, SHIFT, A, W, D, S')
+print('Keys that will terminate the script: ESC, SPACE, SHIFT, A, W, D, S')
 
 time.sleep(1.4)  # Oczekiwanie na przeniesienie focusu na DayZ
 print("\n\nAwaiting to focus at DayZ...\nDo not perform any moves in game")
@@ -195,3 +206,5 @@ print("Script execution time:", execution_time_formatted, "sedonds")
 print("Script execution time:", format_time(execution_time / 60), "minutes (decimal)")
 print("Script execution time:", format_time(execution_time / 60 / 60), "hours (decimal)")
 time.sleep(5)
+print("\nClosing the process")
+time.sleep(2)
