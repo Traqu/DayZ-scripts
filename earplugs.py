@@ -5,6 +5,7 @@ import threading
 
 dayzProcessName = "DayZ_x64.exe"
 earplugsEnabled = threading.Event()
+global volume
 volume = 1
 
 sessions = AudioUtilities.GetAllSessions()
@@ -15,24 +16,24 @@ for session in sessions:
         print(dayzSession.Process)
         volume_ctrl = dayzSession.SimpleAudioVolume
 
-def enableEarplugs(event):
+def enableEarplugs(enableButton):
     if not earplugsEnabled.is_set():
-        if event.name == 'n':
+        if enableButton.name == 'n':
             earplugsEnabled.set()
             print("Earplugs enabled")
     else:
-        if event.name == 'n':
+        if enableButton.name == 'n':
             earplugsEnabled.clear()
             print("Earplugs disabled")
 
-def setVolume(event, volumeButton):
-    if event.name == volumeButton:
-        if volumeButton == '+':
+def setVolume(volumeButton, volume):
+        print(volume)
+        if volumeButton.name == '=':
             if volume < 1:
                 volume += 0.1
                 volume_ctrl.SetMasterVolume(volume, None)
                 print("Volume set to: " + str(volume))
-        elif volumeButton == '-':
+        elif volumeButton.name == '-':
             if volume > 0:
                 volume -= 0.1
                 volume_ctrl.SetMasterVolume(volume, None)
@@ -40,8 +41,7 @@ def setVolume(event, volumeButton):
 
 # Ustawienia skrótów klawiszowych
 keyboard.on_press(partial(enableEarplugs))
-keyboard.on_press(partial(setVolume, volumeButton='+'))
-keyboard.on_press(partial(setVolume, volumeButton='-'))
+keyboard.on_press(partial(setVolume, volume = volume))
 
 # Pętla nieskończona, czeka na wciśnięcie klawisza 'q' do zakończenia programu
 while True:
