@@ -31,15 +31,15 @@ def setVolume(volumeButton, volume_ctrl):
             if volumeButton.name == '=':
                 if volume < 1:
                     volume += 0.1
+                    volume = round(volume, 1)
                     volume_ctrl.SetMasterVolume(volume, None)
                     print("Volume set to: " + str(volume))
-                    return volume
             elif volumeButton.name == '-':
                 if volume > 0:
                     volume -= 0.1
+                    volume = round(volume, 1)
                     volume_ctrl.SetMasterVolume(volume, None)
                     print("Volume set to: " + str(volume))
-                    return volume
         
 
 keyboard.on_press(partial(enableEarplugs))
