@@ -34,7 +34,7 @@ while dayzSession is None and not escape_pressed:
         for session in sessions:
             if session.Process and session.Process.name() == dayzProcessName:
                 dayzSession = session
-                print(dayzSession.Process)
+                print("\nConnection established:\n" + str(dayzSession.Process))
                 volume_ctrl = dayzSession.SimpleAudioVolume
                 break
             else:
@@ -51,7 +51,7 @@ while dayzSession is None and not escape_pressed:
         break
 
 if(volume_ctrl is not None):
-    print("\nDayZ audio controller has been succesfully linked!\nYou can enable your earplugs by pressing N button now.\n\n")
+    print("\nDayZ audio controller has been succesfully linked!\nYou can enable your earplugs by pressing 'N' button now.\n\n")
 
 if escape_pressed:
     print("Escape key pressed. Exiting...")
