@@ -1,3 +1,6 @@
+# Unignore all `.exe` in `bin` dir
+!output/*.exe
+
 # Ignore files with extension `.lnk` & `.exe`
 *.exe
 *.lnk
