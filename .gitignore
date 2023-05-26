@@ -1,9 +1,10 @@
 # Unignore all `.exe` in `bin` dir
 !output/*.exe
 
-# Ignore files with extension `.lnk` & `.exe`
-
+# Ignore files with extension `.lnk` & `.ini` & `icon*`
+*.ini
 *.lnk
+*icon/
 
 
 # Byte-compiled / optimized / DLL files
