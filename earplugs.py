@@ -137,3 +137,5 @@ if(volume_ctrl is not None):
     print("Volume set to: " + str(1.0))
 print("Exiting application")
 time.sleep(1.5)
+
+#TODO obsłużyć zamknięcie aplikacji ALBO oczekiwanie na nowy PROCESS, po zamknięciu obecnego :)
