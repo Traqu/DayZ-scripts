@@ -2,7 +2,7 @@
 !output/*.exe
 
 # Ignore files with extension `.lnk` & `.exe`
-*.exe
+
 *.lnk
 
 
