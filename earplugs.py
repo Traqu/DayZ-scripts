@@ -22,7 +22,7 @@ def on_escape_press(event):
         allow_exit = False
         print("Escape key pressed. Exiting...")
     else:
-        print("Cannot exit at this time.")
+        print("To exit - press END.")
 
 
 keyboard.on_press_key("esc", on_escape_press)
