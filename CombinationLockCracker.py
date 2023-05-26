@@ -148,20 +148,19 @@ def check_1000s_options():
 #####################################################################################
 #####################################################################################
 
-# Tworzymy flagę, która będzie służyć do przerwania metody start_cracking_the_code()
 stop_flag = threading.Event()
 
 def stop_execution():
     stop_flag.set()
 
-# Funkcja obsługująca wciśnięcie klawisza
+# Button press handler
 def key_press_handler(event):
     global exit_key
     if event.name == 'a' or event.name == 'w' or event.name == 's' or event.name == 'd' or event.name == 'esc' or event.name == 'space' or event.name == 'shift':
         exit_key = event.name
         stop_execution()
 
-# Rejestrujemy funkcję obsługującą wciśnięcie klawisza przerywającego proces
+# check for process exit button press
 keyboard.on_press(key_press_handler)
 
 def start_cracking_the_code():
