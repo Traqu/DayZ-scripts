@@ -10,7 +10,9 @@ volume = 1
 dayzSession = None
 escape_pressed = False
 allow_exit = True
+volume_ctrl = None
 
+print("\n\nTo exit the application press ESC")
 
 def on_escape_press(event):
     global escape_pressed, allow_exit
@@ -27,6 +29,7 @@ keyboard.on_press_key("esc", on_escape_press)
 
 while dayzSession is None and not escape_pressed:
     try:
+        print("\nAwaiting for DayZ to start up...")
         sessions = AudioUtilities.GetAllSessions()
         for session in sessions:
             if session.Process and session.Process.name() == dayzProcessName:
@@ -35,14 +38,20 @@ while dayzSession is None and not escape_pressed:
                 volume_ctrl = dayzSession.SimpleAudioVolume
                 break
             else:
-                print("Awaiting for DayZ to start up...")
-                time.sleep(10)
+                time.sleep(0.1)
+                print("Trying to link DayZ process to the audio controller...")
                 if escape_pressed:
                     break
+        if(volume_ctrl is None):
+            time.sleep(5)
+    
 
     except Exception as e:
         print("Error occurred:", str(e))
         break
+
+if(volume_ctrl is not None):
+    print("\nDayZ audio controller has been succesfully linked!\nYou can enable your earplugs by pressing N button now.\n\n")
 
 if escape_pressed:
     print("Escape key pressed. Exiting...")
