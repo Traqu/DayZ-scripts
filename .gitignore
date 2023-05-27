@@ -1,4 +1,4 @@
-# Unignore all `.exe` in `bin` dir
+# Unignore all `.exe` in `output` dir
 !output/*.exe
 
 # Ignore files with extension `.lnk` & `.ini` & `icon*`

@@ -8,13 +8,15 @@ from win32 import win32gui
 processName = "DayZ_x64.exe"
 applicationTitle = "DayZ"
 earplugsEnabled = threading.Event()
-volume = 1
+volume = 1.0
 dayzSession = None
 escape_pressed = False
 allow_exit = True
 volume_ctrl = None
 shift_pressed = False
 n_pressed = False
+sessionStillExists = False
+sessionEstablished = False
 
 print("\n\nTo exit the application press ESC")
 
@@ -65,6 +67,7 @@ while dayzSession is None and not escape_pressed:
         for session in sessions:
             if session.Process and session.Process.name() == processName:
                 dayzSession = session
+                sessionEstablished = True
                 print("\nConnection established:\n" + str(dayzSession.Process))
                 volume_ctrl = dayzSession.SimpleAudioVolume
                 break
@@ -128,14 +131,41 @@ else:
     keyboard.on_press(partial(enableEarplugs))
     keyboard.on_press(partial(setVolume, volume_ctrl=volume_ctrl))
 
+    def check_if_process_still_running():
+        global sessionEstablished
+
+        while (sessionEstablished):
+            print("Refreshing sessions list")
+            sessions = AudioUtilities.GetAllSessions()
+            sessionStillExists = False
+
+            for session in sessions:
+                if session.Process and session.Process.name() == processName:
+                    sessionStillExists = True
+                    break
+
+            if sessionStillExists:
+                sessionEstablished = True
+                print("Session established: " + str(sessionEstablished))
+            else:
+                sessionEstablished = False
+                print("Session established: " + str(sessionEstablished))
+
+            time.sleep(10)
+
+    monitor_active_processes_Thread = threading.Thread(target=check_if_process_still_running)
+    monitor_active_processes_Thread.start()
+    
     while True:
         if keyboard.is_pressed('end') or escape_pressed:
             break
+        if(not sessionEstablished):
+            print("The DayZ session has ended\nExiting the application")
+            break
+            
 
 if(volume_ctrl is not None):
     volume_ctrl.SetMasterVolume(1, None)
     print("Volume set to: " + str(1.0))
 print("Exiting application")
 time.sleep(1.5)
-
-#TODO obsłużyć zamknięcie aplikacji ALBO oczekiwanie na nowy PROCESS, po zamknięciu obecnego :)
