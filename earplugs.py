@@ -4,7 +4,6 @@ from functools import partial
 import threading
 import time
 from win32 import win32gui
-import sys
 
 processName = "DayZ_x64.exe"
 applicationTitle = "DayZ"
