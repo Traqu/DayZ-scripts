@@ -148,10 +148,8 @@ else:
                     sessionStillExists = True
 
             if sessionStillExists:
-                print(sessionStillExists)
                 sessionEstablished = True
             else:
-                print(sessionStillExists)
                 sessionEstablished = False
                 stop_thread = True
                 
