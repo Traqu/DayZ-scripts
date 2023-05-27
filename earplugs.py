@@ -92,24 +92,24 @@ if escape_pressed:
     if(allow_exit):
         print("Escape key pressed. Exiting...")
 else:
-    def enableEarplugs(enableButton):
+    def enableEarplugs(event):
         if(get_active_window_title() == applicationTitle):
             if not earplugsEnabled.is_set():
-                if enableButton.name == 'n' or n_pressed and shift_pressed:
+                if event.name == 'n' or n_pressed and shift_pressed:
                     earplugsEnabled.set()
                     print("Earplugs enabled")
                     volume_ctrl.SetMasterVolume(volume, None)
                     print("Volume set to: " + str(volume))
             else:
-                if enableButton.name == 'n' or n_pressed and shift_pressed:
+                if event.name == 'n' or n_pressed and shift_pressed:
                     earplugsEnabled.clear()
                     print("Earplugs disabled")
                     volume_ctrl.SetMasterVolume(1, None)
                     print("Volume set to: " + str(1.0))
         else:
-            if(enableButton.name == 'n'):
+            if(event.name == 'n'):
                 print("You have to be focused on DayZ to enable airplugs.")
-            elif(enableButton.name == '_' or enableButton.name == '-' or enableButton.name == '=' or enableButton.name == '+'):
+            elif(event.name == '_' or event.name == '-' or event.name == '=' or event.name == '+'):
                 print("You have to be focused on DayZ to manipulate airplugs.")
                 
     def setVolume(volumeButton, volume_ctrl):
