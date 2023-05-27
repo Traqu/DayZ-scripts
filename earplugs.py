@@ -140,6 +140,7 @@ else:
             if(keyboard.is_pressed('end')):
                 stop_thread = True
                 break
+           
             sessions = AudioUtilities.GetAllSessions()
             sessionStillExists = False
 
@@ -153,6 +154,7 @@ else:
                 sessionEstablished = False
                 stop_thread = True
                 
+                
     monitor_active_processes_Thread = threading.Thread(target=check_if_process_still_running)
     monitor_active_processes_Thread.start()
     
@@ -162,7 +164,7 @@ else:
         if(not sessionEstablished):
             print(applicationTitle + " session has ended")
             break
-            
+        time.sleep(0.1) #literally the most important line of code - otherwise PCU would not handle this many calculations and you'd experience severe lag
 
 if(volume_ctrl is not None):
     volume_ctrl.SetMasterVolume(1, None)
