@@ -34,7 +34,7 @@ def on_escape_press(event):
     elif allow_exit:
         allow_exit = False
         if(allow_exit):
-            print("Escape key pressed. Exiting...")
+            print("\nEscape key pressed.")
     else:
         print("To exit - press END.")
 
@@ -74,11 +74,10 @@ while dayzSession is None and not escape_pressed:
                 break
             else:
                 time.sleep(0.1)
-                print("Trying to link DayZ process to the audio controller...")
                 if escape_pressed:
                     break
         if(volume_ctrl is None):
-            time.sleep(5)
+            time.sleep(3)
     
 
     except Exception as e:
@@ -90,7 +89,7 @@ if(volume_ctrl is not None):
 
 if escape_pressed:
     if(allow_exit):
-        print("Escape key pressed. Exiting...")
+        print("\nEscape key pressed.")
 else:
     def enableEarplugs(event):
         if(get_active_window_title() == applicationTitle):
@@ -161,12 +160,12 @@ else:
         if keyboard.is_pressed('end') or escape_pressed:
             break
         if(not sessionEstablished):
-            print(applicationTitle + " session has ended")
+            print("\n" + applicationTitle + " session has ended")
             break
         time.sleep(0.1) #literally the most important line of code - otherwise PCU would not handle this many calculations and you'd experience severe lag
 
 if(volume_ctrl is not None):
     volume_ctrl.SetMasterVolume(1, None)
-    print("Volume set to: " + str(1.0))
-print("Exiting application")
+    print("Volume default value has been restored")
+print("Exiting application...")
 time.sleep(1.5)
