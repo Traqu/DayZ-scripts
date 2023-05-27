@@ -4,6 +4,7 @@ from functools import partial
 import threading
 import time
 from win32 import win32gui
+import sys
 
 processName = "DayZ_x64.exe"
 applicationTitle = "DayZ"
@@ -17,6 +18,7 @@ shift_pressed = False
 n_pressed = False
 sessionStillExists = False
 sessionEstablished = False
+stop_thread = False
 
 print("\n\nTo exit the application press ESC")
 
@@ -132,27 +134,27 @@ else:
     keyboard.on_press(partial(setVolume, volume_ctrl=volume_ctrl))
 
     def check_if_process_still_running():
-        global sessionEstablished
+        global sessionEstablished, stop_thread
 
-        while (sessionEstablished):
-            print("Refreshing sessions list")
+        while (sessionEstablished and not stop_thread):
+            if(keyboard.is_pressed('end')):
+                stop_thread = True
+                break
             sessions = AudioUtilities.GetAllSessions()
             sessionStillExists = False
 
             for session in sessions:
                 if session.Process and session.Process.name() == processName:
                     sessionStillExists = True
-                    break
 
             if sessionStillExists:
+                print(sessionStillExists)
                 sessionEstablished = True
-                print("Session established: " + str(sessionEstablished))
             else:
+                print(sessionStillExists)
                 sessionEstablished = False
-                print("Session established: " + str(sessionEstablished))
-
-            time.sleep(10)
-
+                stop_thread = True
+                
     monitor_active_processes_Thread = threading.Thread(target=check_if_process_still_running)
     monitor_active_processes_Thread.start()
     
@@ -160,7 +162,7 @@ else:
         if keyboard.is_pressed('end') or escape_pressed:
             break
         if(not sessionEstablished):
-            print("The DayZ session has ended\nExiting the application")
+            print(applicationTitle + " session has ended")
             break
             
 
