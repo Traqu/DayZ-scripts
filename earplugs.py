@@ -94,19 +94,19 @@ else:
     def enableEarplugs(event):
         if(get_active_window_title() == applicationTitle):
             if not earplugsEnabled.is_set():
-                if event.name == 'n' or n_pressed and shift_pressed:
+                if event.name == 'n' or event.name == 'N' or n_pressed and shift_pressed:
                     earplugsEnabled.set()
                     print("Earplugs enabled")
                     volume_ctrl.SetMasterVolume(volume, None)
                     print("Volume set to: " + str(volume))
             else:
-                if event.name == 'n' or n_pressed and shift_pressed:
+                if event.name == 'n' or event.name == 'N' or n_pressed and shift_pressed:
                     earplugsEnabled.clear()
                     print("Earplugs disabled")
                     volume_ctrl.SetMasterVolume(1, None)
                     print("Volume set to: " + str(1.0))
         else:
-            if(event.name == 'n'):
+            if(event.name == 'n' or event.name == 'N'):
                 print("You have to be focused on DayZ to enable airplugs.")
             elif(event.name == '_' or event.name == '-' or event.name == '=' or event.name == '+'):
                 print("You have to be focused on DayZ to manipulate airplugs.")
