@@ -41,20 +41,25 @@ def overtake_control(dummy_arg=None):
         is_running = False
         keyboard.release('shift')
 
-def force_stop_autorun(stop_button):
+def force_stop_autorun(stop_button = None):
     global is_running
     if is_running:
-        if(not stop_button.name == 'esc'):
-            is_running = False
-            keyboard.release('w')
-            keyboard.release('shift')
+        if(stop_button is not None):
+            if(not stop_button.name == 'esc'):
+                is_running = False
+                keyboard.release('w')
+                keyboard.release('shift')
+            else:
+                if(not inventory_opened):
+                    is_running = False
+                    keyboard.release('w')
+                    keyboard.release('shift')
         else:
             if(not inventory_opened):
                 is_running = False
                 keyboard.release('w')
                 keyboard.release('shift')
-            else:
-                pass
+            
 
 # ↓ possible that Steam detects the hotkeys faster no matter what - ↓
 # - seem to be working 1/3 of the times (and maybe only in 1st attempt also - carry out thorough testing)
