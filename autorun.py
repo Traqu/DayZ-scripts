@@ -5,13 +5,30 @@ import mouse
 AUTORUN_BUTTON = 'pause'
 HOTKEYS_W_AR = 'w + ' + AUTORUN_BUTTON
 HOTKEYS_SHIFT_W_AR = 'shift + w + ' + AUTORUN_BUTTON
-is_running = False
+autorun_enabled = False
 w_pressed = False
 autorun_hotkey_detected = False
 inventory_opened = False
+map_enabled = False
+should_you_let_me_in = False
+
+
+def handle_map_button(map_button):
+    global map_enabled, should_you_let_me_in
+    print("Autorun enabled: " + str(autorun_enabled))
+    if(autorun_enabled or should_you_let_me_in):
+        if(not map_enabled):
+           force_stop_autorun()
+           map_enabled = True
+           should_you_let_me_in = True
+        else:
+            time.sleep(0.05)
+            start_autorun()
+            map_enabled = False 
+            should_you_let_me_in = False
 
 def release_tab(dummy_arg=None):
-    if(is_running):
+    if(autorun_enabled):
         keyboard.release('tab')
 
 def autorun():
@@ -20,43 +37,43 @@ def autorun():
 
 def start_autorun(dummy_arg=None):
     global autorun_hotkey_detected
-    global is_running
+    global autorun_enabled
     if(not autorun_hotkey_detected):
-        is_running = True
+        autorun_enabled = True
         autorun()
     else:
         autorun_hotkey_detected = False
 
 def start_autorun__giveaway_control(dummy_arg=None):
     global autorun_hotkey_detected
-    global is_running
+    global autorun_enabled
     autorun_hotkey_detected = True
     time.sleep(0.18)
-    is_running = True
+    autorun_enabled = True
     autorun()
 
 def overtake_control(dummy_arg=None):
-    global is_running
-    if is_running:
-        is_running = False
+    global autorun_enabled
+    if autorun_enabled:
+        autorun_enabled = False
         keyboard.release('shift')
 
 def force_stop_autorun(stop_button = None):
-    global is_running
-    if is_running:
+    global autorun_enabled
+    if autorun_enabled:
         if(stop_button is not None):
             if(not stop_button.name == 'esc'):
-                is_running = False
+                autorun_enabled = False
                 keyboard.release('w')
                 keyboard.release('shift')
             else:
                 if(not inventory_opened):
-                    is_running = False
+                    autorun_enabled = False
                     keyboard.release('w')
                     keyboard.release('shift')
         else:
             if(not inventory_opened):
-                is_running = False
+                autorun_enabled = False
                 keyboard.release('w')
                 keyboard.release('shift')
             
@@ -64,8 +81,8 @@ def force_stop_autorun(stop_button = None):
 # ↓ possible that Steam detects the hotkeys faster no matter what - ↓
 # - seem to be working 1/3 of the times (and maybe only in 1st attempt also - carry out thorough testing)
 def overlay_buttons_stop_autorun(overlay_button):
-    global is_running, inventory_opened
-    if is_running:
+    global autorun_enabled, inventory_opened
+    if autorun_enabled:
         keyboard.release('tab')
         if(overlay_button.name == 'tab'):
             keyboard.press('tab')
@@ -78,7 +95,7 @@ def overlay_buttons_stop_autorun(overlay_button):
             keyboard.release('`')
         keyboard.release('shift')
         keyboard.release('w')
-        is_running = False
+        autorun_enabled = False
         time.sleep(0.1)
         start_autorun()
     
@@ -103,11 +120,12 @@ keyboard.add_hotkey(HOTKEYS_W_AR, start_autorun__giveaway_control)
 keyboard.add_hotkey(HOTKEYS_SHIFT_W_AR, start_autorun__giveaway_control)
 mouse.on_right_click(force_stop_autorun)
 keyboard.on_press(release_tab)
+keyboard.on_press_key('m', handle_map_button)
 
 
 while True:
-    if is_running:
+    if autorun_enabled:
         if not w_pressed and keyboard.is_pressed('w'):
             w_pressed = True
-            is_running = False
+            autorun_enabled = False
     time.sleep(0.1)
