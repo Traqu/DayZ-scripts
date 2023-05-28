@@ -3,6 +3,8 @@ import time
 import mouse
 
 AUTORUN_BUTTON = 'pause'
+HOTKEYS_W_AR = 'w + ' + AUTORUN_BUTTON
+HOTKEYS_SHIFT_W_AR = 'shift + w + ' + AUTORUN_BUTTON
 is_running = False
 w_pressed = False
 autorun_hotkey_detected = False
@@ -56,8 +58,8 @@ for key in keys_to_stop:
     
 keyboard.on_release_key('w', on_w_release)
 keyboard.on_press_key('w', overtake_control)
-keyboard.add_hotkey('w + shift' + AUTORUN_BUTTON, start_autorun__giveaway_control)
-keyboard.add_hotkey('w' + AUTORUN_BUTTON, start_autorun__giveaway_control)
+keyboard.add_hotkey(HOTKEYS_W_AR, start_autorun__giveaway_control)
+keyboard.add_hotkey(HOTKEYS_SHIFT_W_AR, start_autorun__giveaway_control)
 mouse.on_right_click(force_stop_autorun)
 
 while True:
